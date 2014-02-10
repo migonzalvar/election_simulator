@@ -10,7 +10,10 @@
   </head>
   <body>
     <h1>D'Hondt</h1>
-    <form id="votes_cast">
+    <form id="votes_cast" method="get" action="{{ url_for('calculate_dhondt') }}">
+        <input type="number" name="v">
+        <input type="number" name="v">
+        <input type="number" name="v">
         <input type="submit">
     </form>
     <script src="https://code.jquery.com/jquery.js"></script>

@@ -12,5 +12,6 @@ def index():
 @app.route('/dhondt')
 def calculate_dhondt():
     votes = request.args.getlist('v', type=int)
+    # TODO: sanitize input
     result = dhondt(votes, 3)
     return jsonify(result=result)
