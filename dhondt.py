@@ -4,14 +4,14 @@
 def dhondt(data, num_escanos):
     escanos = dict.fromkeys(data.keys(), 0)
     partidos = data.keys()
-    votos = data.values()
+    ronda = [(v,0, k) for k, v in data.iteritems()]
     for escano in range(num_escanos):
-        print("%s %s" % (escano, votos))
-        max_votos = max(votos)
-        ganador = votos.index(max_votos)
-        partido_ganador = partidos[ganador]
+        print("%s %s" % (escano, ronda))
+        ganador_ronda = max(ronda)
+        idx = ronda.index(ganador_ronda)
+        votos_ronda, escanos_ganador_inv , partido_ganador = ganador_ronda
         escanos[partido_ganador] += 1
-        votos[ganador] = data[partido_ganador] / (escanos[partido_ganador] + 1)
+        ronda[idx] = data[partido_ganador] / (escanos[partido_ganador] + 1), escanos_ganador_inv-1, partido_ganador
     return escanos
 
 
@@ -39,17 +39,16 @@ def test_cordoba():
     data = OrderedDict(zip(partidos, votos))
     resultado = OrderedDict(zip(partidos, escanos))
 
-
     assert dhondt(data, 7) == resultado
 
+
 def test_cordoba_dos():
-    from collections import OrderedDict
     partidos = 'PSOE', 'PP', 'IU'
     votos = 246324-7647, 166665, 47908+7647
     escanos = 4, 2, 1
 
-    data = OrderedDict(zip(partidos, votos))
-    resultado = OrderedDict(zip(partidos, escanos))
+    data = dict(zip(partidos, votos))
+    resultado = dict(zip(partidos, escanos))
 
 
     assert dhondt(data, 7) == resultado
