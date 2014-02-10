@@ -1,18 +1,17 @@
 "Calculate distribution using D'Hondt"
 
 
-def dhondt(data, num_escanos):
-    escanos = dict.fromkeys(data.keys(), 0)
-    partidos = data.keys()
-    ronda = [(v,0, k) for k, v in data.iteritems()]
-    for escano in range(num_escanos):
-        print("%s %s" % (escano, ronda))
-        ganador_ronda = max(ronda)
-        idx = ronda.index(ganador_ronda)
-        votos_ronda, escanos_ganador_inv , partido_ganador = ganador_ronda
-        escanos[partido_ganador] += 1
-        ronda[idx] = data[partido_ganador] / (escanos[partido_ganador] + 1), escanos_ganador_inv-1, partido_ganador
-    return escanos
+def dhondt(votes_cast, total_seats):
+    seats_per_party = dict.fromkeys(votes_cast.keys(), 0)
+    quotients = [(votes, 0, party) for party, votes in votes_cast.iteritems()]
+    for seat in range(total_seats):
+        print("%s %s" % (seat, quotients))
+        round_winner = max(quotients)
+        idx = quotients.index(round_winner)
+        max_quotient, inv_seats, party = round_winner
+        seats_per_party[party] += 1
+        quotients[idx] = votes_cast[party] / (seats_per_party[party] + 1), inv_seats-1, party
+    return seats_per_party
 
 
 def test():
