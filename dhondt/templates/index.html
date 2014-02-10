@@ -10,19 +10,34 @@
   </head>
   <body>
     <h1>D'Hondt</h1>
-    <form id="votes_cast" method="get" action="{{ url_for('calculate_dhondt') }}">
-        <input type="number" name="v">
-        <input type="number" name="v">
-        <input type="number" name="v">
+    <form id="votes_cast">
+        <input type="number" name="v" value="0">
+        <input type="number" name="v" value="0">
+        <input type="number" name="v" value="0">
         <input type="submit">
     </form>
+    <p id="result"></p>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script>
-// A $( document ).ready() block.
-$( document ).ready(function() {
-    console.log( "ready!" );
+
+var process_response = function(response){
+    console.log(response.result);
+    tpl = response.result;
+    $('#result').html(tpl);
+};
+
+var form_submit = function(event) {
+    data = $('#votes_cast').serialize();
+    url = "{{ url_for('calculate_dhondt') }}";
+    $.get(url=url, data=data, success=process_response);
+    event.preventDefault();
+};
+
+$(document).ready(function() {
+    $('#votes_cast').submit(form_submit);
 });
+
 </script>
   </body>
 </html>
